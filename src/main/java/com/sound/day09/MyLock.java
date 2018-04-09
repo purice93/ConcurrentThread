@@ -15,7 +15,7 @@ public class MyLock implements Lock {
     private int lockCount = 0; //重入的线程个数
 
     @Override
-    public void lock() {
+    public synchronized void lock() {
         Thread currentThread = Thread.currentThread();
         // 当对象已经被第一个线程加锁&&当前进入的线程不是第一个线程，就等待wait
         while (isLock && currentThread != firstLock) {
@@ -32,7 +32,7 @@ public class MyLock implements Lock {
     }
 
     @Override
-    public void unlock() {
+    public synchronized void unlock() {
         // 判断是否为第一个线程，是的话，计数-1，直达为最后一个线程时，唤醒对象的其他等待线程
         if (Thread.currentThread() == firstLock) {
             lockCount--;
